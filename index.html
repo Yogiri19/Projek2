@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YOGIRI.AI - Portal Futuristik</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ═══════════════════ LOADING SCREEN ═══════════════════ -->
+<div id="loading">
+  <div class="loader-ring"></div>
+  <div class="loader-text">YOGIRI.AI</div>
+  <div class="loader-bar"><div class="loader-bar-inner" id="loaderBar"></div></div>
+</div>
+
+<!-- ═══════════════════ CURSOR GLOW ═══════════════════ -->
+<div id="cursor-glow"></div>
+
+<!-- ═══════════════════ TOAST CONTAINER ═══════════════════ -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- ═══════════════════ LOGIN PAGE ═══════════════════ -->
+<div id="login-page">
+  <canvas id="particles-canvas"></canvas>
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+
+  <button class="sound-toggle" id="soundToggle" aria-label="Toggle Sound"><i class="fas fa-volume-mute"></i></button>
+
+  <div class="login-container" id="loginContainer">
+    <!-- Mascot -->
+    <div class="mascot-wrap" id="mascotWrap">
+      <div class="speech-bubble" id="speechBubble"></div>
+      <div class="sparkle-container" id="sparkleContainer"></div>
+      <svg id="mascot" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="glowF"><feGaussianBlur stdDeviation="3" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <radialGradient id="headGrad" cx="40%" cy="35%"><stop offset="0%" stop-color="#1e1e3a"/><stop offset="100%" stop-color="#111128"/></radialGradient>
+        </defs>
+        <!-- Antenna -->
+        <line x1="100" y1="52" x2="100" y2="30" stroke="rgba(0,229,255,.4)" stroke-width="2"/>
+        <circle cx="100" cy="26" r="5" fill="rgba(0,229,255,.5)" filter="url(#glowF)">
+          <animate attributeName="r" values="4;6;4" dur="2s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values=".5;1;.5" dur="2s" repeatCount="indefinite"/>
+        </circle>
+        <!-- Ears -->
+        <polygon points="52,72 38,26 76,56" fill="url(#headGrad)" stroke="rgba(0,229,255,.2)" stroke-width="1.5"/>
+        <polygon points="54,68 44,34 72,56" fill="rgba(255,45,149,.2)"/>
+        <polygon points="148,72 162,26 124,56" fill="url(#headGrad)" stroke="rgba(0,229,255,.2)" stroke-width="1.5"/>
+        <polygon points="146,68 156,34 128,56" fill="rgba(255,45,149,.2)"/>
+        <!-- Head -->
+        <circle cx="100" cy="108" r="60" fill="url(#headGrad)" stroke="rgba(0,229,255,.15)" stroke-width="1.5"/>
+        <!-- Left Eye -->
+        <ellipse cx="78" cy="102" rx="16" ry="18" fill="#e8e8f0"/>
+        <circle id="leftPupil" cx="78" cy="102" r="8" fill="#0a0a0f"/>
+        <circle id="leftShine" cx="82" cy="96" r="3" fill="#fff" opacity=".85"/>
+        <ellipse id="leftEyelid" class="eyelid" cx="78" cy="102" rx="17" ry="0" fill="#1a1a30"/>
+        <!-- Right Eye -->
+        <ellipse cx="122" cy="102" rx="16" ry="18" fill="#e8e8f0"/>
+        <circle id="rightPupil" cx="122" cy="102" r="8" fill="#0a0a0f"/>
+        <circle id="rightShine" cx="126" cy="96" r="3" fill="#fff" opacity=".85"/>
+        <ellipse id="rightEyelid" class="eyelid" cx="122" cy="102" rx="17" ry="0" fill="#1a1a30"/>
+        <!-- Eyebrows -->
+        <path id="leftBrow" class="brow-path" d="M62,84 Q78,78 94,84" fill="none" stroke="#c8c8e0" stroke-width="2.5" stroke-linecap="round"/>
+        <path id="rightBrow" class="brow-path" d="M106,84 Q122,78 138,84" fill="none" stroke="#c8c8e0" stroke-width="2.5" stroke-linecap="round"/>
+        <!-- Nose -->
+        <path d="M97,115 L100,119 L103,115" fill="rgba(255,45,149,.5)"/>
+        <!-- Mouth -->
+        <path id="mouth" class="mouth-path" d="M90,126 Q100,134 110,126" fill="none" stroke="#c8c8e0" stroke-width="2" stroke-linecap="round"/>
+        <!-- Blush -->
+        <ellipse class="blush" cx="62" cy="114" rx="9" ry="5" fill="rgba(255,45,149,.18)"/>
+        <ellipse class="blush" cx="138" cy="114" rx="9" ry="5" fill="rgba(255,45,149,.18)"/>
+        <!-- Paws -->
+        <g id="leftPaw" class="paw-group" transform="translate(52,148)">
+          <ellipse cx="0" cy="0" rx="16" ry="11" fill="#1a1a30" stroke="rgba(0,229,255,.15)" stroke-width="1.5"/>
+          <circle cx="-5" cy="-2" r="3" fill="rgba(255,45,149,.2)"/>
+          <circle cx="5" cy="-2" r="3" fill="rgba(255,45,149,.2)"/>
+          <circle cx="0" cy="3" r="2.5" fill="rgba(255,45,149,.2)"/>
+        </g>
+        <g id="rightPaw" class="paw-group" transform="translate(148,148)">
+          <ellipse cx="0" cy="0" rx="16" ry="11" fill="#1a1a30" stroke="rgba(0,229,255,.15)" stroke-width="1.5"/>
+          <circle cx="-5" cy="-2" r="3" fill="rgba(255,45,149,.2)"/>
+          <circle cx="5" cy="-2" r="3" fill="rgba(255,45,149,.2)"/>
+          <circle cx="0" cy="3" r="2.5" fill="rgba(255,45,149,.2)"/>
+        </g>
+      </svg>
+    </div>
+
+    <!-- Login Card -->
+    <div class="login-card">
+      <h2 class="form-title" id="formTitle">Selamat Datang</h2>
+      <p class="form-sub" id="formSub">Masuk ke portal YOGIRI.AI</p>
+      <div class="input-group">
+        <i class="fas fa-envelope"></i>
+        <input type="email" id="emailInput" placeholder="Email" autocomplete="email">
+      </div>
+      <div class="input-group">
+        <i class="fas fa-lock"></i>
+        <input type="password" id="passwordInput" placeholder="Password" autocomplete="current-password">
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" id="loginBtn"><i class="fas fa-arrow-right"></i> Masuk</button>
+        <button class="btn btn-secondary" id="signupBtn"><i class="fas fa-user-plus"></i> Daftar</button>
+      </div>
+      <div class="forgot-link"><a href="#" id="forgotLink">Lupa Password?</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ DASHBOARD ═══════════════════ -->
+<div id="dashboard">
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <i class="fas fa-diamond" style="color:var(--accent);font-size:1.3rem"></i>
+      <span class="sidebar-logo">YOGIRI.AI</span>
+    </div>
+    <nav class="sidebar-nav" id="sidebarNav"></nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-avatar" id="sidebarAvatar">Y</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name" id="sidebarName">Pengguna</div>
+          <div class="sidebar-user-email" id="sidebarEmail">user@yogiri.ai</div>
+        </div>
+      </div>
+      <button class="btn-logout" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Keluar</button>
+    </div>
+  </aside>
+
+  <div class="main-area">
+    <nav class="navbar">
+      <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+      <div class="navbar-search">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Cari sesuatu...">
+      </div>
+      <div class="navbar-actions">
+        <button class="navbar-btn" aria-label="Notifikasi"><i class="fas fa-bell"></i><span class="badge"></span></button>
+        <button class="navbar-btn" aria-label="Pengaturan"><i class="fas fa-cog"></i></button>
+        <div class="navbar-profile" id="navbarProfile">Y</div>
+      </div>
+    </nav>
+    <div class="content-area" id="contentArea"></div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
